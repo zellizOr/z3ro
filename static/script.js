@@ -749,8 +749,10 @@ function loadSettings() {
         try { settings = { ...settings, ...JSON.parse(saved) }; } catch(e) {}
     }
 
-    document.getElementById('defaultFormat').value = settings.defaultFormat;
-    document.getElementById('defaultFilename').value = settings.defaultFilename;
+    const dfEl = document.getElementById('defaultFormat');
+    if (dfEl) dfEl.value = settings.defaultFormat;
+    const dnEl = document.getElementById('defaultFilename');
+    if (dnEl) dnEl.value = settings.defaultFilename;
     document.getElementById('defaultAudioQuality').value = settings.defaultAudioQuality;
     document.getElementById('defaultAudioFormat').value = settings.defaultAudioFormat;
     document.getElementById('defaultVideoQuality').value = settings.defaultVideoQuality;
@@ -890,4 +892,33 @@ function showToast(msg, type) {
     toast.className = 'toast visible' + (type ? ` ${type}` : '');
     clearTimeout(toast._timeout);
     toast._timeout = setTimeout(() => toast.classList.remove('visible'), 3500);
+}
+
+function toggleSection(header) {
+    const body = header.nextElementSibling;
+    const isOpen = header.classList.contains('open');
+    header.classList.toggle('open', !isOpen);
+    body.classList.toggle('open', !isOpen);
+}
+
+function selectDefaultFilename(val) {
+    settings.defaultFilename = val;
+    ['title','artist_title','official'].forEach(v => {
+        const id = 'defaultFn' + v.split('_').map(s => s[0].toUpperCase()+s.slice(1)).join('');
+        document.getElementById(id)?.classList.toggle('active', v === val);
+    });
+}
+
+function setDefaultType(type) {
+    settings.defaultFormat = type;
+    document.querySelector('[onclick="setDefaultType(\'audio\')"]')?.classList.toggle('active', type === 'audio');
+    document.querySelector('[onclick="setDefaultType(\'video\')"]')?.classList.toggle('active', type === 'video');
+    showToast(type === 'audio' ? 'audio establecido por defecto' : 'video establecido por defecto', 'success');
+}
+
+function syncDefaultFilenameButtons() {
+    ['title','artist_title','official'].forEach(v => {
+        const id = 'defaultFn' + v.split('_').map(s => s[0].toUpperCase()+s.slice(1)).join('');
+        document.getElementById(id)?.classList.toggle('active', v === settings.defaultFilename);
+    });
 }

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>z3ro</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='collapse.css') }}">
 </head>
 <body>
 
@@ -73,7 +74,6 @@
             </div>
         </div>
 
-        <!-- AUDIO OPTIONS -->
         <div id="audioOptions">
             <div class="option-group">
                 <div class="option-label" data-i18n="opt_quality">calidad</div>
@@ -97,7 +97,6 @@
             </div>
         </div>
 
-        <!-- VIDEO OPTIONS -->
         <div id="videoOptions" style="display:none;">
             <div class="option-group">
                 <div class="option-label" data-i18n="opt_quality">calidad</div>
@@ -128,7 +127,6 @@
                 <button class="toggle-btn active" id="btnTitle" onclick="selectFilename('title')" data-i18n="fn_title">titulo</button>
                 <button class="toggle-btn" id="btnArtistTitle" onclick="selectFilename('artist_title')" data-i18n="fn_artist_title">artista — titulo</button>
                 <button class="toggle-btn" id="btnOfficial" onclick="selectFilename('official')" data-i18n="fn_official">titulo oficial</button>
-                <button class="toggle-btn" id="btnTitleYear" onclick="selectFilename('title_year')" data-i18n="fn_title_year">titulo (año)</button>
             </div>
         </div>
 
@@ -163,167 +161,183 @@
     <div class="settings-body">
 
         <!-- USUARIO -->
-        <div class="settings-section">
-            <div class="settings-section-title" data-i18n="sec_user">usuario</div>
-            <div class="settings-row">
-                <div class="settings-row-label" data-i18n="user_label">Nombre de usuario de Windows</div>
-                <div class="settings-row-desc" data-i18n="user_desc">Se usa para construir la ruta de descarga automaticamente. Ej: Joaquin → C:\Users\Joaquin\...</div>
-                <input type="text" class="settings-input" id="windowsUsername" placeholder="Joaquin">
-            </div>
-            <div class="settings-row">
-                <div class="settings-row-label" data-i18n="folder_label">Carpeta de descarga</div>
-                <div class="settings-row-desc" data-i18n="folder_desc">Nombre de la carpeta dentro de tu usuario. Podes escribir una subcarpeta como Music\z3ro.</div>
-                <div class="toggle-group" id="folderPresets" style="margin-bottom:0.5rem;">
-                    <button class="toggle-btn active" onclick="selectFolderPreset('Downloads')" data-i18n="folder_downloads">Downloads</button>
-                    <button class="toggle-btn" onclick="selectFolderPreset('Music')" data-i18n="folder_music">Music</button>
-                    <button class="toggle-btn" onclick="selectFolderPreset('Desktop')" data-i18n="folder_desktop">Desktop</button>
-                    <button class="toggle-btn" onclick="selectFolderPreset('Videos')" data-i18n="folder_videos">Videos</button>
+        <div class="collapse-section">
+            <button class="collapse-header" onclick="toggleSection(this)">
+                <span data-i18n="sec_user">usuario</span>
+                <svg class="collapse-arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="collapse-body">
+                <div class="settings-row">
+                    <div class="settings-row-label" data-i18n="user_label">Nombre de usuario de Windows</div>
+                    <div class="settings-row-desc" data-i18n="user_desc">Ej: Joaquin → C:\Users\Joaquin\...</div>
+                    <input type="text" class="settings-input" id="windowsUsername" placeholder="Joaquin">
                 </div>
-                <input type="text" class="settings-input" id="folderName" placeholder="Downloads">
-            </div>
-            <div class="settings-row">
-                <div class="settings-row-label" data-i18n="custom_path_label">Ruta personalizada</div>
-                <div class="settings-row-desc" data-i18n="custom_path_desc">Opcional. Si la completas, ignora el usuario y carpeta de arriba.</div>
-                <input type="text" class="settings-input" id="defaultPath" placeholder="C:\ruta\personalizada">
-            </div>
-            <div class="settings-row">
-                <div class="settings-row-label" data-i18n="path_preview_label">Vista previa de ruta</div>
-                <div class="path-preview" id="pathPreview">—</div>
+                <div class="settings-row">
+                    <div class="settings-row-label" data-i18n="folder_label">Carpeta de descarga</div>
+                    <div class="toggle-group" id="folderPresets" style="margin-bottom:0.5rem;">
+                        <button class="toggle-btn active" onclick="selectFolderPreset('Downloads')">Downloads</button>
+                        <button class="toggle-btn" onclick="selectFolderPreset('Music')">Music</button>
+                        <button class="toggle-btn" onclick="selectFolderPreset('Desktop')">Desktop</button>
+                        <button class="toggle-btn" onclick="selectFolderPreset('Videos')">Videos</button>
+                    </div>
+                    <input type="text" class="settings-input" id="folderName" placeholder="Downloads">
+                </div>
+                <div class="settings-row">
+                    <div class="settings-row-label" data-i18n="custom_path_label">Ruta personalizada</div>
+                    <div class="settings-row-desc" data-i18n="custom_path_desc">Opcional. Si la completas, ignora usuario y carpeta.</div>
+                    <input type="text" class="settings-input" id="defaultPath" placeholder="C:\ruta\personalizada">
+                </div>
+                <div class="settings-row">
+                    <div class="settings-row-label" data-i18n="path_preview_label">Vista previa</div>
+                    <div class="path-preview" id="pathPreview">—</div>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-row-label" data-i18n="filename_label">Plantilla de nombre</div>
+                    <div class="settings-row-desc" data-i18n="filename_desc">Como se llamara el archivo descargado.</div>
+                    <div class="toggle-group">
+                        <button class="toggle-btn active" id="defaultFnTitle" onclick="selectDefaultFilename('title')" data-i18n="fn_title">titulo</button>
+                        <button class="toggle-btn" id="defaultFnArtistTitle" onclick="selectDefaultFilename('artist_title')" data-i18n="fn_artist_title">artista — titulo</button>
+                        <button class="toggle-btn" id="defaultFnOfficial" onclick="selectDefaultFilename('official')" data-i18n="fn_official">titulo oficial</button>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- AUDIO -->
-        <div class="settings-section">
-            <div class="settings-section-title" data-i18n="sec_audio">audio — predeterminados</div>
-            <div class="settings-row">
-                <div class="settings-row-label" data-i18n="audio_quality_label">Calidad por defecto</div>
-                <div class="settings-row-desc" data-i18n="audio_quality_desc">Kilobits por segundo. A mayor valor, mejor calidad y mayor tamaño de archivo.</div>
-                <select class="settings-select" id="defaultAudioQuality">
-                    <option value="64">64 kbps — baja</option>
-                    <option value="128">128 kbps — estandar</option>
-                    <option value="192" selected>192 kbps — buena</option>
-                    <option value="256">256 kbps — muy buena</option>
-                    <option value="320">320 kbps — maxima</option>
-                    <option value="best">★ mejor disponible</option>
-                </select>
-            </div>
-            <div class="settings-row">
-                <div class="settings-row-label" data-i18n="audio_format_label">Formato por defecto</div>
-                <div class="settings-row-desc" data-i18n="audio_format_desc">MP3 es el mas compatible. FLAC es sin perdida. AAC y Opus son eficientes en tamaño.</div>
-                <select class="settings-select" id="defaultAudioFormat">
-                    <option value="mp3">mp3 — mas compatible</option>
-                    <option value="aac">aac — eficiente</option>
-                    <option value="flac">flac — sin perdida</option>
-                    <option value="opus">opus — moderno y liviano</option>
-                </select>
+        <div class="collapse-section">
+            <button class="collapse-header" onclick="toggleSection(this)">
+                <span data-i18n="sec_audio">audio</span>
+                <svg class="collapse-arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="collapse-body">
+                <div class="settings-row">
+                    <div class="settings-row-label" data-i18n="audio_quality_label">Calidad por defecto</div>
+                    <div class="settings-row-desc" data-i18n="audio_quality_desc">Kilobits por segundo. A mayor valor, mejor calidad.</div>
+                    <select class="settings-select" id="defaultAudioQuality">
+                        <option value="64">64 kbps — baja</option>
+                        <option value="128">128 kbps — estandar</option>
+                        <option value="192" selected>192 kbps — buena</option>
+                        <option value="256">256 kbps — muy buena</option>
+                        <option value="320">320 kbps — maxima</option>
+                        <option value="best">★ mejor disponible</option>
+                    </select>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-row-label" data-i18n="audio_format_label">Formato por defecto</div>
+                    <div class="settings-row-desc" data-i18n="audio_format_desc">MP3 es el mas compatible. FLAC es sin perdida.</div>
+                    <select class="settings-select" id="defaultAudioFormat">
+                        <option value="mp3">mp3 — mas compatible</option>
+                        <option value="aac">aac — eficiente</option>
+                        <option value="flac">flac — sin perdida</option>
+                        <option value="opus">opus — moderno y liviano</option>
+                    </select>
+                </div>
+                <button class="settings-default-btn" onclick="setDefaultType('audio')" data-i18n="set_audio_default">
+                    ★ establecer audio como descarga por defecto
+                </button>
             </div>
         </div>
 
         <!-- VIDEO -->
-        <div class="settings-section">
-            <div class="settings-section-title" data-i18n="sec_video">video — predeterminados</div>
-            <div class="settings-row">
-                <div class="settings-row-label" data-i18n="video_quality_label">Calidad por defecto</div>
-                <div class="settings-row-desc" data-i18n="video_quality_desc">Resolucion maxima a descargar. Si el video no tiene esa calidad, se descarga la mejor disponible.</div>
-                <select class="settings-select" id="defaultVideoQuality">
-                    <option value="240">240p</option>
-                    <option value="360">360p</option>
-                    <option value="480">480p</option>
-                    <option value="720" selected>720p — recomendado</option>
-                    <option value="1080">1080p — full HD</option>
-                    <option value="best">★ mejor disponible</option>
-                </select>
-            </div>
-            <div class="settings-row">
-                <div class="settings-row-label" data-i18n="video_format_label">Formato por defecto</div>
-                <div class="settings-row-desc" data-i18n="video_format_desc">MP4 es el mas compatible con reproductores y dispositivos. MKV soporta mas pistas. WebM es abierto y liviano.</div>
-                <select class="settings-select" id="defaultVideoFormat">
-                    <option value="mp4">mp4 — mas compatible</option>
-                    <option value="mkv">mkv — multi-pista</option>
-                    <option value="webm">webm — abierto</option>
-                </select>
-            </div>
-            <div class="settings-row">
-                <div class="settings-row-label" data-i18n="default_format_label">Tipo de descarga por defecto</div>
-                <select class="settings-select" id="defaultFormat">
-                    <option value="audio">audio</option>
-                    <option value="video">video</option>
-                </select>
-            </div>
-        </div>
-
-        <!-- NOMBRE DE ARCHIVO -->
-        <div class="settings-section">
-            <div class="settings-section-title" data-i18n="sec_filename">nombre de archivos</div>
-            <div class="settings-row">
-                <div class="settings-row-label" data-i18n="filename_label">Plantilla por defecto</div>
-                <div class="settings-row-desc" data-i18n="filename_desc">Como se llamara el archivo descargado.</div>
-                <select class="settings-select" id="defaultFilename">
-                    <option value="title">titulo</option>
-                    <option value="artist_title">artista — titulo</option>
-                    <option value="official">titulo oficial de YouTube</option>
-                    <option value="title_year">titulo (año)</option>
-                </select>
+        <div class="collapse-section">
+            <button class="collapse-header" onclick="toggleSection(this)">
+                <span data-i18n="sec_video">video</span>
+                <svg class="collapse-arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="collapse-body">
+                <div class="settings-row">
+                    <div class="settings-row-label" data-i18n="video_quality_label">Calidad por defecto</div>
+                    <div class="settings-row-desc" data-i18n="video_quality_desc">Resolucion maxima a descargar.</div>
+                    <select class="settings-select" id="defaultVideoQuality">
+                        <option value="240">240p</option>
+                        <option value="360">360p</option>
+                        <option value="480">480p</option>
+                        <option value="720" selected>720p — recomendado</option>
+                        <option value="1080">1080p — full HD</option>
+                        <option value="best">★ mejor disponible</option>
+                    </select>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-row-label" data-i18n="video_format_label">Formato por defecto</div>
+                    <div class="settings-row-desc" data-i18n="video_format_desc">MP4 es el mas compatible.</div>
+                    <select class="settings-select" id="defaultVideoFormat">
+                        <option value="mp4">mp4 — mas compatible</option>
+                        <option value="mkv">mkv — multi-pista</option>
+                        <option value="webm">webm — abierto</option>
+                    </select>
+                </div>
+                <button class="settings-default-btn" onclick="setDefaultType('video')" data-i18n="set_video_default">
+                    ★ establecer video como descarga por defecto
+                </button>
             </div>
         </div>
 
         <!-- BUSQUEDA -->
-        <div class="settings-section">
-            <div class="settings-section-title" data-i18n="sec_search">busqueda</div>
-            <div class="settings-row">
-                <div class="settings-row-label" data-i18n="search_count_label">Resultados por busqueda</div>
-                <select class="settings-select" id="searchCount">
-                    <option value="5">5 resultados</option>
-                    <option value="8" selected>8 resultados</option>
-                    <option value="12">12 resultados</option>
-                    <option value="15">15 resultados</option>
-                </select>
-            </div>
-            <div class="settings-row">
-                <div class="settings-row-label" data-i18n="search_history_label">Historial de busquedas</div>
-                <div class="settings-row-desc" data-i18n="search_history_desc">Muestra sugerencias de busquedas anteriores al hacer foco en el buscador.</div>
-                <div class="toggle-group">
-                    <button class="toggle-btn active" id="historyOnBtn" onclick="setHistoryEnabled(true)" data-i18n="toggle_on">activado</button>
-                    <button class="toggle-btn" id="historyOffBtn" onclick="setHistoryEnabled(false)" data-i18n="toggle_off">desactivado</button>
+        <div class="collapse-section">
+            <button class="collapse-header" onclick="toggleSection(this)">
+                <span data-i18n="sec_search">busqueda</span>
+                <svg class="collapse-arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="collapse-body">
+                <div class="settings-row">
+                    <div class="settings-row-label" data-i18n="search_count_label">Resultados por busqueda</div>
+                    <select class="settings-select" id="searchCount">
+                        <option value="5">5 resultados</option>
+                        <option value="8" selected>8 resultados</option>
+                        <option value="12">12 resultados</option>
+                        <option value="15">15 resultados</option>
+                    </select>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-row-label" data-i18n="search_history_label">Historial de busquedas</div>
+                    <div class="settings-row-desc" data-i18n="search_history_desc">Sugerencias al hacer foco en el buscador.</div>
+                    <div class="toggle-group">
+                        <button class="toggle-btn active" id="historyOnBtn" onclick="setHistoryEnabled(true)" data-i18n="toggle_on">activado</button>
+                        <button class="toggle-btn" id="historyOffBtn" onclick="setHistoryEnabled(false)" data-i18n="toggle_off">desactivado</button>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- APARIENCIA -->
-        <div class="settings-section">
-            <div class="settings-section-title" data-i18n="sec_appearance">apariencia</div>
-            <div class="settings-row">
-                <div class="settings-row-label" data-i18n="theme_label">Tema</div>
-                <div class="toggle-group">
-                    <button class="toggle-btn active" id="themeDarkBtn" onclick="setTheme('dark')" data-i18n="theme_dark">oscuro</button>
-                    <button class="toggle-btn" id="themeLightBtn" onclick="setTheme('light')" data-i18n="theme_light">claro</button>
-                    <button class="toggle-btn" id="themeAutoBtn" onclick="setTheme('auto')" data-i18n="theme_auto">auto</button>
+        <div class="collapse-section">
+            <button class="collapse-header" onclick="toggleSection(this)">
+                <span data-i18n="sec_appearance">apariencia</span>
+                <svg class="collapse-arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="collapse-body">
+                <div class="settings-row">
+                    <div class="settings-row-label" data-i18n="theme_label">Tema</div>
+                    <div class="toggle-group">
+                        <button class="toggle-btn active" id="themeDarkBtn" onclick="setTheme('dark')" data-i18n="theme_dark">oscuro</button>
+                        <button class="toggle-btn" id="themeLightBtn" onclick="setTheme('light')" data-i18n="theme_light">claro</button>
+                        <button class="toggle-btn" id="themeAutoBtn" onclick="setTheme('auto')" data-i18n="theme_auto">auto</button>
+                    </div>
                 </div>
-            </div>
-            <div class="settings-row">
-                <div class="settings-row-label" data-i18n="accent_label">Color de acento</div>
-                <div class="color-options" id="colorOptions">
-                    <div class="color-dot active" data-color="#7c6aff" style="background:#7c6aff;" title="Violet"></div>
-                    <div class="color-dot" data-color="#3b82f6" style="background:#3b82f6;" title="Blue"></div>
-                    <div class="color-dot" data-color="#10b981" style="background:#10b981;" title="Emerald"></div>
-                    <div class="color-dot" data-color="#f59e0b" style="background:#f59e0b;" title="Amber"></div>
-                    <div class="color-dot" data-color="#ef4444" style="background:#ef4444;" title="Red"></div>
-                    <div class="color-dot" data-color="#ec4899" style="background:#ec4899;" title="Pink"></div>
-                    <div class="color-dot" data-color="#e8e8f0" style="background:#e8e8f0;" title="White"></div>
+                <div class="settings-row">
+                    <div class="settings-row-label" data-i18n="accent_label">Color de acento</div>
+                    <div class="color-options" id="colorOptions">
+                        <div class="color-dot active" data-color="#7c6aff" style="background:#7c6aff;"></div>
+                        <div class="color-dot" data-color="#3b82f6" style="background:#3b82f6;"></div>
+                        <div class="color-dot" data-color="#10b981" style="background:#10b981;"></div>
+                        <div class="color-dot" data-color="#f59e0b" style="background:#f59e0b;"></div>
+                        <div class="color-dot" data-color="#ef4444" style="background:#ef4444;"></div>
+                        <div class="color-dot" data-color="#ec4899" style="background:#ec4899;"></div>
+                        <div class="color-dot" data-color="#e8e8f0" style="background:#e8e8f0;"></div>
+                    </div>
                 </div>
-            </div>
-            <div class="settings-row">
-                <div class="settings-row-label" data-i18n="lang_label">Idioma / Language</div>
-                <div class="toggle-group">
-                    <button class="toggle-btn active" id="langEsBtn" onclick="setLanguage('es')">Español</button>
-                    <button class="toggle-btn" id="langEnBtn" onclick="setLanguage('en')">English</button>
+                <div class="settings-row">
+                    <div class="settings-row-label" data-i18n="lang_label">Idioma / Language</div>
+                    <div class="toggle-group">
+                        <button class="toggle-btn active" id="langEsBtn" onclick="setLanguage('es')">Español</button>
+                        <button class="toggle-btn" id="langEnBtn" onclick="setLanguage('en')">English</button>
+                    </div>
                 </div>
             </div>
         </div>
 
         <button class="settings-save" onclick="saveSettings()" data-i18n="btn_save">guardar ajustes</button>
 
-        <!-- NOTA TRADUCCION -->
         <div class="settings-note">
             <span data-i18n="translation_note">¿Queres colaborar con una traduccion o reportar un error?</span>
             <a href="mailto:contact@z3ro.app">contact@z3ro.app</a>
@@ -333,7 +347,6 @@
 </div>
 
 <div class="toast" id="toast"></div>
-
 <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

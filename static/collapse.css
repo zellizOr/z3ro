@@ -1,0 +1,84 @@
+/* COLLAPSIBLE SECTIONS */
+.collapse-section {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.collapse-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem 1rem;
+    background: var(--surface2);
+    border: none;
+    cursor: pointer;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: background 0.15s, color 0.15s;
+    text-align: left;
+}
+
+.collapse-header:hover {
+    background: var(--surface3);
+    color: var(--text);
+}
+
+.collapse-header.open {
+    color: var(--accent);
+    border-bottom: 1px solid var(--border);
+}
+
+.collapse-arrow {
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+    color: var(--text3);
+}
+
+.collapse-header.open .collapse-arrow {
+    transform: rotate(180deg);
+    color: var(--accent);
+}
+
+.collapse-body {
+    display: none;
+    flex-direction: column;
+    gap: 1.2rem;
+    padding: 1.2rem 1rem;
+    background: var(--surface);
+}
+
+.collapse-body.open {
+    display: flex;
+}
+
+/* DEFAULT TYPE BUTTON */
+.settings-default-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.55rem 1rem;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--text2);
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    transition: all 0.15s;
+}
+
+.settings-default-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-glow);
+}
+
+.settings-default-btn.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-glow);
+}
