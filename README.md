@@ -12,12 +12,3 @@
 *   **Interfaz Web:** Panel de control limpio desarrollado con Flask.
 *   **Alta Velocidad:** Procesamiento eficiente de las URLs de YouTube.
 *   **Simple y Ligero:** Sin configuraciones complejas, listo para usar.
-
----
-
-## 🛠️ Tecnologías utilizadas
-
-*   **Lenguaje:** Python 3.x
-*   **Framework Web:** [Flask](https://flask.palletsprojects.com/)
-*   **Lógica de descarga:** [Pytube](https://pytube.io/) / [yt-dlp](https://github.com/yt-dlp/yt-dlp)
-*   **Frontend:** HTML5, CSS3 y JavaScript (Vanilla)
